@@ -82,12 +82,25 @@ import React from 'react';
 import illustration from '../hooks/illustration.svg';
 import Navbar from '../components/Navbar';
 import { Link } from 'react-router-dom';
+import { loginUser } from "../api/auth.api";
 
 const Login = () => {
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Logging in...");
+    const email = e.target[0].value;
+    const password = e.target[1].value;
+
+    try {
+      const data = await loginUser(email, password);
+      localStorage.setItem("token", data.access_token);
+      alert("Login successful");
+      // redirect to dashboard or profile page
+    } catch (err) {
+      alert(err.message);
+    }
   };
+
+
 
   const handleGoogleLogin = () => {
     alert("Google login clicked (frontend only)");

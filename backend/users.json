@@ -1,0 +1,27 @@
+[
+  {
+    "email": "user1@example.com",
+    "password": "test123"
+  },
+  {
+    "email": "user2@example.com",
+    "password": "secure456"
+  },
+  {
+    "username": "pd",
+    "email": "prince@example.com",
+    "password": "$2b$12$qC/dBxsOhNnGilvye09ptu1q0pGeJVl7CodV/eeEFiiU5lEI7fG4G"
+  },
+  {
+    "username": "test",
+    "email": "ts.pn.744962@gmail.com",
+    "password": "$2b$12$nkYNgGKpybHYFPCVXYfzw.uTWXuQftAAvVnHSTkWlCL.yY3/xjtSa",
+    "google_signup": false
+  },
+  {
+    "username": "alex",
+    "email": "ts.pn.744@gmail.com",
+    "password": "$2b$12$lVPF5Ti.anjQCArzcAg8vePO/PI0NUnI06zHEQDWPWebDwDexqxpW",
+    "google_signup": false
+  }
+]
