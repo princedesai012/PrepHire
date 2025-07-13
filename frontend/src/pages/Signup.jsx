@@ -79,11 +79,23 @@
 
 import illustration from "../hooks/illustration.svg";
 import Navbar from "../components/Navbar";
+import { signupUser } from "../api/auth.api";
+
 
 const Signup = () => {
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Signing up...");
+    const username = e.target[0].value;
+    const email = e.target[1].value;
+    const password = e.target[2].value;
+  
+    try {
+      const data = await signupUser(username, email, password);
+      alert(data.message || "Signup successful");
+      window.location.href = "/login";
+    } catch (err) {
+      alert(err.message);
+    }
   };
 
   const handleGoogleLogin = () => {
