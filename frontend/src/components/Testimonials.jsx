@@ -8,7 +8,7 @@ const Testimonials = () => {
       role: "Small Business Owner",
       content: "This platform transformed my business! I went from having no online presence to a beautiful, professional website in just one day.",
       rating: 5,
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face&auto=format"
+      image: "https://images.unsplash.com/photo-1502767089025-6572583495b0?w=100&h=100&fit=crop&crop=face&auto=format"
     },
     {
       name: "Mike Chen",
