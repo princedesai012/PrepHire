@@ -1,42 +1,58 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ Import navigation hook
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, LogIn } from "lucide-react";
 
 const navigationItems = [
-  { name: "Resume", href: "#resume" },
-  { name: "Interview", href: "#interview" },
+  { name: "Analyze Resume", href: "/analyze-resume" },
+  { name: "Interview Practice", href: "/interview" },
   { name: "About", href: "#about" },
+  { name: "Contact", href: "#contact" },
 ];
 
-const NavLink = ({ item, onClick }) => (
-  <a
-    href={item.href}
-    onClick={onClick}
-    className="text-gray-700 hover:text-blue-600 px-6 py-3 rounded-xl text-sm font-medium transition-all duration-500 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:scale-105 hover:shadow-lg relative group overflow-hidden"
-  >
-    <span className="relative z-10">{item.name}</span>
-    <div className="absolute inset-0 bg-gradient-to-r from-blue-100 to-indigo-100 opacity-0 group-hover:opacity-100 transition-all duration-500 scale-x-0 group-hover:scale-x-100 transform origin-left"></div>
-    <span className="absolute bottom-1 left-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 group-hover:w-3/4 group-hover:left-1/8 transition-all duration-500"></span>
-  </a>
-);
+const NavLink = ({ item, onClick }) => {
+  const navigate = useNavigate();
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    if (item.href.startsWith("#")) {
+      const section = item.href.slice(1); // e.g., "about"
+      localStorage.setItem("scrollToSection", section); // store target section
+      navigate("/home"); // redirect to home
+    } else {
+      navigate(item.href); // go to route
+    }
+    if (onClick) onClick(); // for mobile menu
+  };
+
+  return (
+    <a
+      href={item.href}
+      onClick={handleClick}
+      className="text-gray-700 hover:text-blue-600 px-6 py-3 rounded-xl text-sm font-medium transition-all duration-500 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:scale-105 hover:shadow-lg relative group overflow-hidden"
+    >
+      <span className="relative z-10">{item.name}</span>
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-100 to-indigo-100 opacity-0 group-hover:opacity-100 transition-all duration-500 scale-x-0 group-hover:scale-x-100 transform origin-left"></div>
+      <span className="absolute bottom-1 left-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 group-hover:w-3/4 group-hover:left-1/8 transition-all duration-500"></span>
+    </a>
+  );
+};
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
   const handleLinkClick = () => setIsMenuOpen(false);
-  const navigate = useNavigate(); // ✅ Hook to navigate
+  const navigate = useNavigate();
 
   return (
-    <nav
-      className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200/50 shadow-lg transition-all duration-300"
-      role="navigation"
-      aria-label="Main Navigation"
-    >
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200/50 shadow-lg transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-16 cursor-pointer">
           {/* Logo */}
-          <div className="flex items-center space-x-3 group">
+          <div
+            className="flex items-center space-x-3 group"
+            onClick={() => navigate("/home")}
+          >
             <div className="w-10 h-10 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
               <span className="text-white font-bold text-lg">P</span>
             </div>
@@ -51,15 +67,13 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
+          <div className="hidden md:flex items-center space-x-4">
             {navigationItems.map((item) => (
               <NavLink key={item.name} item={item} />
             ))}
-
-            {/* ✅ Desktop Log In Button */}
             <Button
               className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-purple-600 hover:via-indigo-600 hover:to-blue-600 text-white shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:-translate-y-1 rounded-full px-6 relative overflow-hidden group"
-              onClick={() => navigate('/login')}
+              onClick={() => navigate("/login")}
             >
               <span className="relative z-10 flex items-center">
                 <LogIn className="mr-2 h-4 w-4 group-hover:rotate-12 transition-transform duration-300" />
@@ -90,23 +104,17 @@ const Navbar = () => {
           <div className="md:hidden animate-fade-in">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-gray-200/50 bg-white/95 backdrop-blur-md rounded-b-2xl shadow-xl">
               {navigationItems.map((item, index) => (
-                <a
+                <NavLink
                   key={item.name}
-                  href={item.href}
+                  item={item}
                   onClick={handleLinkClick}
-                  className="text-gray-700 hover:text-blue-600 block px-4 py-3 rounded-xl text-base font-medium transition-all duration-300 hover:bg-blue-50 hover:scale-105"
-                  style={{ animationDelay: `${index * 50}ms` }}
-                >
-                  {item.name}
-                </a>
+                />
               ))}
-
-              {/* ✅ Mobile Log In Button */}
               <div className="pt-3 border-t border-gray-200/50">
                 <Button
                   className="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-purple-600 hover:via-indigo-600 hover:to-blue-600 text-white transition-all duration-300 hover:scale-105 rounded-xl shadow-lg"
                   onClick={() => {
-                    navigate('/login');
+                    navigate("/login");
                     setIsMenuOpen(false);
                   }}
                 >

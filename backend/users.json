@@ -23,5 +23,17 @@
     "email": "ts.pn.744@gmail.com",
     "password": "$2b$12$lVPF5Ti.anjQCArzcAg8vePO/PI0NUnI06zHEQDWPWebDwDexqxpW",
     "google_signup": false
+  },
+  {
+    "username": "Jadeja",
+    "email": "hey@gmail.com",
+    "password": "$2b$12$4c1okpsWQcZtdZTq/hhG0en8zrHiZ8wPEvXECaecXzKQzQuyp3tJ.",
+    "google_signup": false
+  },
+  {
+    "username": "23DCE043",
+    "email": "23dce043@charusat.edu.in",
+    "password": "$2b$12$4uTNI5ckLYEIdWgp6hS3yuxlL0w6HxanzxbOrgo1tIhV5JG/HN1Wi",
+    "google_signup": false
   }
 ]
