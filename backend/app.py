@@ -109,6 +109,22 @@ def google_signup():
     except ValueError:
         return jsonify({"message": "Invalid Google token"}), 401
 
+@app.route("/api/user", methods=["GET"])
+@jwt_required()
+def get_user_info():
+    current_email = get_jwt_identity()
+    users = load_users()
+    user = next((u for u in users if u["email"] == current_email), None)
+
+    if user:
+        return jsonify({
+            "email": user["email"],
+            "username": user["username"]
+        }), 200
+    else:
+        return jsonify({"message": "User not found"}), 404
+
+
 @app.route("/api/protected", methods=["GET"])
 @jwt_required()
 def protected():

@@ -22,6 +22,21 @@ export const loginUser = async (email, password) => {
   }
 };
 
+export const fetchUserDetails = async () => {
+  const token = localStorage.getItem("token");
+
+  const res = await fetch("http://localhost:5000/api/user", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || "Failed to fetch user");
+
+  return data;
+};
 
 
 export const signupUser = async (username, email, password) => {
