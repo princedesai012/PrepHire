@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import illustration from '../hooks/illustration.svg';
 import Navbar from '../components/Navbar';
 import { Link, useNavigate } from 'react-router-dom';
-import { loginUser } from "../api/auth.api";
+import { loginUser, googleSignup } from "../api/auth.api";
 import Footer from "@/components/Footer";
-import { Eye, EyeOff } from "lucide-react"; // install via: npm install lucide-react
+import { Eye, EyeOff } from "lucide-react";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -25,9 +25,29 @@ const Login = () => {
     }
   };
 
-  const handleGoogleLogin = () => {
-    alert("Google login clicked (frontend only)");
-  };
+  // ✅ Google Identity Services (One Tap)
+  useEffect(() => {
+    if (window.google) {
+      window.google.accounts.id.initialize({
+        client_id: "88929798729-vrm6civj7erlf8di1h3lq9tgsggc6ull.apps.googleusercontent.com",
+        callback: async (response) => {
+          const idToken = response.credential;
+          try {
+            const data = await googleSignup(idToken);
+            localStorage.setItem("token", data.access_token);
+            navigate("/analyze-resume");
+          } catch (err) {
+            alert(err.message || "Google login failed");
+          }
+        },
+      });
+
+      window.google.accounts.id.renderButton(
+        document.getElementById("google-login-button"),
+        { theme: "outline", size: "large", shape: "pill", width: "100%" }
+      );
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
@@ -38,17 +58,7 @@ const Login = () => {
           <h1 className="text-3xl font-bold mb-6 text-primary">PrepHire Login</h1>
 
           {/* Google Login Button */}
-          <button
-            onClick={handleGoogleLogin}
-            className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white font-semibold shadow-lg transition-all duration-500 ease-in-out hover:from-purple-600 hover:via-indigo-600 hover:to-blue-600 hover:scale-105 mb-2"
-          >
-            <img
-              src="https://www.svgrepo.com/show/475656/google-color.svg"
-              alt="Google"
-              className="w-5 h-5"
-            />
-            <span>Sign in with Google</span>
-          </button>
+          <div id="google-login-button" className="mb-4"></div>
 
           <div className="flex items-center gap-4 my-2">
             <hr className="flex-grow border-gray-300" />
@@ -75,7 +85,7 @@ const Login = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword((prev) => !prev)}
-                className="absolute top-1/2 right-4 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+                className="absolute top-1/2 right-4 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
               >
                 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>

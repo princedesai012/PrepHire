@@ -42,18 +42,25 @@ export const signupUser = async (username, email, password) => {
     } catch (error) {
       throw error;
     }
+  };  
+
+  export const googleSignup = async (token) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/google-signup`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }),
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Google signup failed');
+      }
+      
+      return await response.json();
+    } catch (err) {
+      throw err;
+    }
   };
-  
-  export const googleSignup = async (idToken) => {
-    const res = await fetch("http://localhost:5000/api/google-signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token: idToken }),
-    });
-  
-    const data = await res.json();
-  
-    if (!res.ok) throw new Error(data.message || "Google signup failed");
-    return data;
-  };
-  

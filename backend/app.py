@@ -88,8 +88,17 @@ def google_signup():
 
     try:
         idinfo = id_token.verify_oauth2_token(token, google_requests.Request(), GOOGLE_CLIENT_ID)
+        
+        # Additional validation checks
+        if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+            return jsonify({"message": "Invalid issuer"}), 401
+            
+        if idinfo['aud'] != GOOGLE_CLIENT_ID:
+            return jsonify({"message": "Invalid audience"}), 401
+
         email = idinfo["email"]
-        name = idinfo.get("name", "User")
+        name = idinfo.get("name", email.split('@')[0])  # Fallback to email prefix if no name
+        picture = idinfo.get("picture", "")  # Optionally store profile picture
 
         users = load_users()
         user = next((u for u in users if u["email"] == email), None)
@@ -99,15 +108,29 @@ def google_signup():
                 "username": name,
                 "email": email,
                 "password": "",
-                "google_signup": True
+                "google_signup": True,
+                "profile_picture": picture,  # Store profile picture if available
+                "verified": True  # Mark as verified since Google verified the email
             })
             save_users(users)
+        elif not user.get("google_signup"):
+            return jsonify({"message": "Email already registered with password"}), 409
 
         token = create_access_token(identity=email)
-        return jsonify({"access_token": token, "message": "Google signup/login successful"})
+        return jsonify({
+            "access_token": token,
+            "message": "Google signup/login successful",
+            "user": {
+                "email": email,
+                "name": name,
+                "picture": picture
+            }
+        })
 
-    except ValueError:
-        return jsonify({"message": "Invalid Google token"}), 401
+    except ValueError as e:
+        return jsonify({"message": f"Invalid Google token: {str(e)}"}), 401
+    except Exception as e:
+        return jsonify({"message": f"Authentication error: {str(e)}"}), 500
 
 @app.route("/api/protected", methods=["GET"])
 @jwt_required()
