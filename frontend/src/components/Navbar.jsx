@@ -71,16 +71,42 @@ const Navbar = () => {
             {navigationItems.map((item) => (
               <NavLink key={item.name} item={item} />
             ))}
-            <Button
-              className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-purple-600 hover:via-indigo-600 hover:to-blue-600 text-white shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:-translate-y-1 rounded-full px-6 relative overflow-hidden group"
-              onClick={() => navigate("/login")}
-            >
-              <span className="relative z-10 flex items-center">
-                <LogIn className="mr-2 h-4 w-4 group-hover:rotate-12 transition-transform duration-300" />
-                Log In
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            </Button>
+
+            {localStorage.getItem("token") ? (
+              <>
+                {/* Account Button styled like NavLink */}
+                <button
+                  onClick={() => navigate("/account")}
+                  className="text-gray-700 hover:text-blue-600 px-6 py-3 rounded-xl text-sm font-medium transition-all duration-500 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:scale-105 hover:shadow-lg relative group overflow-hidden"
+                >
+                  <span className="relative z-10">Account</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-100 to-indigo-100 opacity-0 group-hover:opacity-100 transition-all duration-500 scale-x-0 group-hover:scale-x-100 transform origin-left"></div>
+                  <span className="absolute bottom-1 left-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 group-hover:w-3/4 group-hover:left-1/8 transition-all duration-500"></span>
+                </button>
+
+                {/* Logout Button */}
+                <button
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    navigate("/login");
+                  }}
+                  className="text-white bg-red-500 hover:bg-red-600 px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-105 shadow-lg"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Button
+                className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-purple-600 hover:via-indigo-600 hover:to-blue-600 text-white shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:-translate-y-1 rounded-full px-6 relative overflow-hidden group"
+                onClick={() => navigate("/login")}
+              >
+                <span className="relative z-10 flex items-center">
+                  <LogIn className="mr-2 h-4 w-4 group-hover:rotate-12 transition-transform duration-300" />
+                  Log In
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              </Button>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -111,6 +137,29 @@ const Navbar = () => {
                 />
               ))}
               <div className="pt-3 border-t border-gray-200/50">
+              {localStorage.getItem("token") ? (
+                <>
+                  <button
+                    onClick={() => {
+                      navigate("/account");
+                      setIsMenuOpen(false);
+                    }}
+                    className="w-full text-gray-700 hover:text-blue-600 px-6 py-3 rounded-xl text-sm font-medium transition-all duration-500 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:scale-105 hover:shadow-lg"
+                  >
+                    Account
+                  </button>
+                  <button
+                    onClick={() => {
+                      localStorage.removeItem("token");
+                      navigate("/login");
+                      setIsMenuOpen(false);
+                    }}
+                    className="w-full text-white bg-red-500 hover:bg-red-600 px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-105 shadow-lg"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
                 <Button
                   className="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-purple-600 hover:via-indigo-600 hover:to-blue-600 text-white transition-all duration-300 hover:scale-105 rounded-xl shadow-lg"
                   onClick={() => {
@@ -121,6 +170,7 @@ const Navbar = () => {
                   <LogIn className="mr-2 h-4 w-4" />
                   Log In
                 </Button>
+              )}
               </div>
             </div>
           </div>
