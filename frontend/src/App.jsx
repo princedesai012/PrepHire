@@ -16,25 +16,6 @@ import ScrollToTop from "@/components/ScrollToTop";
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster richColors position="top-center" />
-      {/* <Sonner /> */}
-      <BrowserRouter>
-      <ScrollToTop /> 
-        <Routes>
-          {/* <Route path="/" element={<Index />} /> */}
-          <Route path="/" element={<Navigate to="/login" replace />} />
-          <Route path="/home" element={<Index />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />   
-          <Route path="/analyze-resume" element={<AnalyzeResume />} />
-          <Route path="/interview" element={<InterviewPage />} />
-          <Route path="/account" element={<Account />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
   <GoogleOAuthProvider clientId="88929798729-vrm6civj7erlf8di1h3lq9tgsggc6ull.apps.googleusercontent.com">
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -49,6 +30,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />   
             <Route path="/analyze-resume" element={<AnalyzeResume />} />
+            <Route path="/account" element={ <Account />} />
             <Route path="/interview" element={<InterviewPage />} />
           </Routes>
         </BrowserRouter>
