@@ -1,4 +1,3 @@
-// src/pages/Account.jsx
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -26,6 +25,9 @@ const Account = () => {
         setUser(data);
         setUsername(data.username);
         setEmail(data.email);
+        if (data.profile_picture) {
+          localStorage.setItem("profilePic", data.profile_picture);
+        }        
       } else {
         throw new Error(data.message);
       }
@@ -88,6 +90,7 @@ const Account = () => {
       });
       if (!res.ok) throw new Error("Failed to delete account");
       localStorage.removeItem("token");
+      localStorage.removeItem("profilePic"); // ✅ remove profile pic on delete
       alert("Account deleted successfully");
       navigate("/signup");
     } catch (err) {
@@ -105,7 +108,7 @@ const Account = () => {
       <div className="mt-[5%] mb-[-1%] flex flex-col-reverse md:flex-row items-center justify-center flex-1 gap-10 px-6 py-12">
         {/* Form */}
         <div className="w-full max-w-md space-y-6">
-          <h1 className="text-3xl font-bold text-primary mb-4">Account Settings</h1>
+          <h1 className="text-3xl font-bold text-primary mb-4">My Account</h1>
 
           {user && (
             <div className="space-y-4">

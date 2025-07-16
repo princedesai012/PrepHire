@@ -35,7 +35,7 @@ const Login = () => {
           try {
             const data = await googleSignup(idToken);
             localStorage.setItem("token", data.access_token);
-            navigate("/analyze-resume");
+            navigate("/account");
           } catch (err) {
             alert(err.message || "Google login failed");
           }
@@ -58,13 +58,23 @@ const Login = () => {
           <h1 className="text-3xl font-bold mb-6 text-primary">PrepHire Login</h1>
 
           {/* Google Login Button */}
-          <div id="google-login-button" className="mb-4"></div>
-
+          <div
+            id="google-login-button"
+            className="cursor-pointer w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white font-semibold shadow-lg transition-all duration-500 ease-in-out hover:from-purple-600 hover:via-indigo-600 hover:to-blue-600 hover:scale-105 mb-2"
+          >
+          <img
+            src="https://www.svgrepo.com/show/475656/google-color.svg"
+            alt="Google"
+            className="w-5 h-5"
+          />
+            <span>Sign in with Google</span>
+          </div>
           <div className="flex items-center gap-4 my-2">
             <hr className="flex-grow border-gray-300" />
             <span className="text-sm text-muted-foreground">or</span>
             <hr className="flex-grow border-gray-300" />
           </div>
+          
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <input

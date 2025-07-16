@@ -142,7 +142,8 @@ def get_user_info():
     if user:
         return jsonify({
             "email": user["email"],
-            "username": user["username"]
+            "username": user["username"],
+            "profile_picture": user.get("profile_picture", "")
         }), 200
     else:
         return jsonify({"message": "User not found"}), 404
@@ -153,6 +154,18 @@ def get_user_info():
 def protected():
     current_user = get_jwt_identity()
     return jsonify({"message": f"Welcome, {current_user}. You're authenticated!"})
+
+@app.route("/api/auth/verify-token", methods=["GET"])
+@jwt_required()
+def verify_token():
+    return jsonify({"message": "Token is valid"}), 200
+
+@app.route("/api/logout", methods=["POST"])
+@jwt_required()
+def logout():
+    # Optional: blacklist token logic
+    return jsonify({"message": "Logged out"}), 200
+
 
 @app.route("/")
 def home():

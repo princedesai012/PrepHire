@@ -19,12 +19,6 @@
     "google_signup": false
   },
   {
-    "username": "23DCE043",
-    "email": "23dce043@charusat.edu.in",
-    "password": "$2b$12$4uTNI5ckLYEIdWgp6hS3yuxlL0w6HxanzxbOrgo1tIhV5JG/HN1Wi",
-    "google_signup": false
-  },
-  {
     "username": "Alex",
     "email": "ts.pn.744962@gmail.com",
     "password": "",
@@ -38,6 +32,22 @@
     "password": "",
     "google_signup": true,
     "profile_picture": "https://lh3.googleusercontent.com/a/ACg8ocKevweyJgG7ltnczcegcRpB4sz10a0M8ZOQZbp6q4IPud2N-A=s96-c",
+    "verified": true
+  },
+  {
+    "username": "23DCE043 YUVRAJSINH JADEJA",
+    "email": "23dce043@charusat.edu.in",
+    "password": "",
+    "google_signup": true,
+    "profile_picture": "https://lh3.googleusercontent.com/a/ACg8ocIUHZADr1Jp4f3GJH-RTc_NT4hDGAFyBm7lIqt0mhu6aRiHIHw=s96-c",
+    "verified": true
+  },
+  {
+    "username": "YUVRAJSINH JADEJA",
+    "email": "mr.yuvrajsinhjadeja007@gmail.com",
+    "password": "",
+    "google_signup": true,
+    "profile_picture": "https://lh3.googleusercontent.com/a/ACg8ocKRU374RO6LomRtD9GQ96_AkoY14Z06g_ZY6HK9m4zWLfF4HOs=s96-c",
     "verified": true
   }
 ]
