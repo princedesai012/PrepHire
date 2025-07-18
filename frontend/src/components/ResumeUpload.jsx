@@ -75,7 +75,7 @@ const ResumeUpload = () => {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.05)_1px,_transparent_1px)] bg-[length:20px_20px]"></div>
       </div>
 
-      <div className="relative z-10 w-full max-w-2xl bg-white/90 backdrop-blur-lg border border-gray-200 rounded-2xl shadow-2xl p-8 text-center animate-fade-in-up">
+      <div className="mt-[3%] relative z-10 w-full max-w-2xl bg-white/90 backdrop-blur-lg border border-gray-200 rounded-2xl shadow-2xl p-8 text-center animate-fade-in-up">
         <h1 className="text-4xl md:text-5xl font-bold text-indigo-700 mb-4">
           AI Resume Analyzer
         </h1>
@@ -146,13 +146,16 @@ const ResumeUpload = () => {
 
             <ul className="text-gray-700 space-y-2 text-base">
               <li>
-                ✅ <strong>Match Score:</strong> 92%
-              </li>
-              <li>
-                ✅ <strong>Keywords Found:</strong> Leadership, React.js, SQL, Agile
-              </li>
-              <li>
                 ✅ <strong>ATS Score:</strong> 85%
+              </li>
+              <li>
+                ✅ <strong>Skill:</strong> MERN, DSA, Python
+              </li>
+              <li>
+                ✅ <strong>Experience:</strong> 5 Years
+              </li>
+              <li>
+                ✅ <strong>Education:</strong> B.tech
               </li>
               <li>
                 📌 <strong>Recommendations:</strong>

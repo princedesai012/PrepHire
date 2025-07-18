@@ -44,7 +44,7 @@ const Login = () => {
 
       window.google.accounts.id.renderButton(
         document.getElementById("google-login-button"),
-        { theme: "outline", size: "large", shape: "pill", width: "100%" }
+        { theme: "outline", size: "large", shape: "pill", width: "50%" }
       );
     }
   }, []);
@@ -60,7 +60,6 @@ const Login = () => {
           {/* Google Login Button */}
           <div
             id="google-login-button"
-            className="cursor-pointer w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white font-semibold shadow-lg transition-all duration-500 ease-in-out hover:from-purple-600 hover:via-indigo-600 hover:to-blue-600 hover:scale-105 mb-2"
           >
           <img
             src="https://www.svgrepo.com/show/475656/google-color.svg"
