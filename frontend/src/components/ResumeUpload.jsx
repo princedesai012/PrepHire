@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { Upload, FileCheck2, Sparkles, Loader2, AlertCircle } from "lucide-react";
+import {
+  Upload,
+  FileCheck2,
+  Sparkles,
+  Loader2,
+  AlertCircle,
+} from "lucide-react";
 
 const ResumeUpload = () => {
   const [fileName, setFileName] = useState("");
@@ -7,6 +13,7 @@ const ResumeUpload = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [error, setError] = useState("");
+  const [result, setResult] = useState(null); // ✅ holds analysis result
 
   const handleChange = (e) => {
     const file = e.target.files[0];
@@ -46,24 +53,44 @@ const ResumeUpload = () => {
     setDragActive(false);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!fileName) {
       setError("Please upload a resume file first.");
       return;
     }
 
-    setError("");
+    const fileInput = document.getElementById("resume");
+    const resumeFile = fileInput.files[0];
+    const formData = new FormData();
+    formData.append("resume", resumeFile);
+
     setIsAnalyzing(true);
     setShowResults(false);
+    setError("");
 
-    console.log("Analyzing resume...");
-    setTimeout(() => {
+    try {
+      // const token = localStorage.getItem("access_token");
+      const response = await fetch("http://localhost:5000/api/analyze-resume", {
+        method: "POST",
+        // headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setResult(data); // ✅ store result
+        setShowResults(true);
+        console.log("Prediction:", data);
+      } else {
+        setError(data.error || "Analysis failed.");
+      }
+    } catch (err) {
+      setError("Server error.");
+    } finally {
       setIsAnalyzing(false);
-      setShowResults(true);
-      console.log("Analysis complete.");
-    }, 2000);
+    }
   };
 
   return (
@@ -138,31 +165,35 @@ const ResumeUpload = () => {
           </div>
         )}
 
-        {showResults && (
+        {showResults && result && (
           <div className="mt-10 bg-indigo-50 border border-indigo-200 p-6 rounded-xl shadow-inner text-left animate-fade-in-up">
             <h2 className="text-2xl font-bold text-indigo-700 mb-4 flex items-center gap-2">
               <Sparkles className="text-purple-500" /> Analysis Summary
             </h2>
 
             <ul className="text-gray-700 space-y-2 text-base">
-              <li>
-                ✅ <strong>ATS Score:</strong> 85%
+              {/* <li>
+                ✅ <strong>Predicted Category:</strong> {result.category}
               </li>
               <li>
-                ✅ <strong>Skill:</strong> MERN, DSA, Python
+                ✅ <strong>ATS Score:</strong> {result.ats_score}
+              </li> */}
+              <li>
+                ✅ <strong>Skills:</strong>{" "}
+                {result.skills && result.skills.join(", ")}
               </li>
               <li>
-                ✅ <strong>Experience:</strong> 5 Years
+                ✅ <strong>Experience:</strong> {result.experience}
               </li>
               <li>
-                ✅ <strong>Education:</strong> B.tech
+                ✅ <strong>Education:</strong> {result.education}
               </li>
               <li>
                 📌 <strong>Recommendations:</strong>
                 <ul className="list-disc list-inside ml-4 mt-1 text-sm text-gray-600">
-                  <li>Add more measurable achievements</li>
-                  <li>Include a certifications section</li>
-                  <li>Quantify work experience with numbers</li>
+                  {result.recommendations?.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
                 </ul>
               </li>
             </ul>

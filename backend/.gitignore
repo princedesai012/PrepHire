@@ -7,6 +7,7 @@ node_modules/
 # # Ignore build outputs
 # dist/
 # build/
+backend/clf.pkl
 
 # # Ignore Python cache
 # __pycache__/
