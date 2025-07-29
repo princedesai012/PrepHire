@@ -35,7 +35,7 @@ const Login = () => {
           try {
             const data = await googleSignup(idToken);
             localStorage.setItem("token", data.access_token);
-            navigate("/account");
+            navigate("/home");
           } catch (err) {
             alert(err.message || "Google login failed");
           }

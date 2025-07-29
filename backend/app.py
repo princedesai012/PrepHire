@@ -1,26 +1,32 @@
+import warnings
+from sklearn.exceptions import InconsistentVersionWarning
+warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
-import json
-import bcrypt
-import os
-from dotenv import load_dotenv
-from google.oauth2 import id_token
-from google.auth.transport import requests as google_requests
-import pickle
-import re
-import docx
-import PyPDF2
 from werkzeug.utils import secure_filename
 from pymongo import MongoClient
 from bson import ObjectId
 
+import json
+import bcrypt
+import os
+import re
+import docx
+import PyPDF2
+import pickle
+import spacy
+from dotenv import load_dotenv
+from google.oauth2 import id_token
+from google.auth.transport import requests as google_requests
 
 # Load environment variables
 load_dotenv()
 client = MongoClient(os.getenv("MONGO_URI"))
 db = client["PrepHire"]
 users_collection = db["users"]
+
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 
@@ -30,11 +36,13 @@ jwt = JWTManager(app)
 
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 
+# Load models
 svc_model = pickle.load(open("clf.pkl", "rb"))
 tfidf = pickle.load(open("tfidf.pkl", "rb"))
 le = pickle.load(open("encoder.pkl", "rb"))
+nlp = spacy.load("en_core_web_sm")
 
-
+# --------------------- Helper Functions ---------------------
 
 def clean_resume(txt):
     txt = re.sub(r'http\S+\s', ' ', txt)
@@ -45,7 +53,6 @@ def clean_resume(txt):
     txt = re.sub(r'[!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~]', ' ', txt)
     txt = re.sub(r'\s+', ' ', txt)
     return txt
-
 
 def extract_text(file):
     filename = secure_filename(file.filename)
@@ -61,10 +68,6 @@ def extract_text(file):
     else:
         raise ValueError("Unsupported file format.")
 
-
-import spacy
-nlp = spacy.load("en_core_web_sm") 
-
 def extract_resume_details(text):
     doc = nlp(text)
 
@@ -73,27 +76,14 @@ def extract_resume_details(text):
         "react", "node", "mern", "ds", "ml", "nlp", "mongodb"
     ]
     
-    # Extract skills
-    skills_found = set()
-    for token in doc:
-        if token.text.lower() in skills_keywords:
-            skills_found.add(token.text.upper())
+    skills_found = set(token.text.upper() for token in doc if token.text.lower() in skills_keywords)
 
-    # Extract education
     education_keywords = ["b.tech", "m.tech", "bachelor", "master", "msc", "bsc", "engineering"]
-    education = "Not Found"
-    for sent in doc.sents:
-        if any(edu in sent.text.lower() for edu in education_keywords):
-            education = sent.text.strip()
-            break
+    education = next((sent.text.strip() for sent in doc.sents if any(edu in sent.text.lower() for edu in education_keywords)), "Not Found")
 
-    # Estimate experience from years
-    experience = "Not Found"
     matches = re.findall(r'(\d+)\+?\s*(?:years|yrs)', text.lower())
-    if matches:
-        experience = f"{max(map(int, matches))} Years"
+    experience = f"{max(map(int, matches))} Years" if matches else "Not Found"
 
-    # Simulate ATS score (based on section keywords)
     ats_score = 50
     if "experience" in text.lower(): ats_score += 15
     if "skills" in text.lower(): ats_score += 15
@@ -106,7 +96,13 @@ def extract_resume_details(text):
         "ats_score": f"{min(ats_score, 100)}%"
     }
 
-# ----------------------- Routes -----------------------
+# ------------------------- Routes -------------------------
+
+@app.route("/api/auth/verify-token", methods=["GET"])
+@jwt_required()
+def verify_token():
+    return jsonify({"message": "Token is valid"}), 200
+
 
 @app.route("/api/signup", methods=["POST"])
 def signup():
@@ -124,7 +120,9 @@ def signup():
         "username": username,
         "email": email,
         "password": hashed_pw,
-        "google_signup": False
+        "google_signup": False,
+        "profile_picture": "",
+        "verified": False
     }
 
     users_collection.insert_one(user)
@@ -147,7 +145,15 @@ def login():
         return jsonify({"message": "Invalid email or password"}), 401
 
     token = create_access_token(identity=email)
-    return jsonify({"access_token": token, "message": "Login successful"}), 200
+    return jsonify({
+        "access_token": token,
+        "message": "Login successful",
+        "user": {
+            "email": email,
+            "name": user.get("username", ""),
+            "picture": user.get("profile_picture", "")
+        }
+    }), 200
 
 @app.route("/api/google-signup", methods=["POST"])
 def google_signup():
@@ -194,7 +200,6 @@ def google_signup():
     except Exception as e:
         return jsonify({"message": f"Authentication error: {str(e)}"}), 500
 
-
 @app.route("/api/user", methods=["GET"])
 @jwt_required()
 def get_user_info():
@@ -204,11 +209,11 @@ def get_user_info():
     if user:
         return jsonify({
             "email": user["email"],
-            "username": user["username"]
+            "username": user["username"],
+            "profile_picture": user.get("profile_picture", "")
         }), 200
     else:
         return jsonify({"message": "User not found"}), 404
-
 
 @app.route("/api/protected", methods=["GET"])
 @jwt_required()
@@ -217,17 +222,17 @@ def protected():
     return jsonify({"message": f"Welcome, {current_user}. You're authenticated!"})
 
 @app.route("/api/analyze-resume", methods=["POST"])
-# @jwt_required()  
+# @jwt_required()
 def analyze_resume():
     try:
         file = request.files["resume"]
-        raw_text = extract_text(file)                    #  Extract
-        cleaned = clean_resume(raw_text)                 # Clean
-        vectorized = tfidf.transform([cleaned]).toarray()  #  Vectorize
-        prediction = svc_model.predict(vectorized)       #  Predict category
+        raw_text = extract_text(file)
+        cleaned = clean_resume(raw_text)
+        vectorized = tfidf.transform([cleaned]).toarray()
+        prediction = svc_model.predict(vectorized)
         label = le.inverse_transform(prediction)[0]
 
-        extracted = extract_resume_details(cleaned)      #  NLP insights
+        extracted = extract_resume_details(cleaned)
 
         return jsonify({
             "category": label,
@@ -245,14 +250,11 @@ def analyze_resume():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
-
-
 @app.route("/")
 def home():
-    return " AI Resume Analyzer Backend is Running"
+    return "AI Resume Analyzer Backend is Running"
 
-# ----------------------- Run -----------------------
+# ------------------------- Run -------------------------
 
 if __name__ == "__main__":
     app.run(debug=True)

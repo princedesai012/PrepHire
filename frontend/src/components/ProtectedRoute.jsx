@@ -5,36 +5,41 @@ import { Loader2 } from "lucide-react";
 
 export default function ProtectedRoute({ children }) {
   const [isValid, setIsValid] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const verify = async () => {
+    const verifyToken = async () => {
       const token = localStorage.getItem("token");
-      let valid = false;
 
-      if (token) {
-        try {
-          const res = await fetch("http://localhost:5000/api/auth/verify-token", {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-
-          valid = res.ok;
-          if (!valid) localStorage.removeItem("token");
-        } catch {
-          localStorage.removeItem("token");
-        }
+      if (!token) {
+        setIsValid(false);
+        return;
       }
 
-      setTimeout(() => {
-        setIsValid(valid);
-        setLoading(false);
-      }, 500);
+      try {
+        const res = await fetch("http://localhost:5000/api/auth/verify-token", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (res.ok) {
+          setIsValid(true);
+        } else {
+          localStorage.removeItem("token");
+          setIsValid(false);
+        }
+      } catch (err) {
+        localStorage.removeItem("token");
+        setIsValid(false);
+      }
     };
 
-    verify();
+    verifyToken();
   }, []);
 
-  if (loading) {
+  if (isValid === null) {
     return (
       <div className="flex flex-col items-center justify-center h-screen text-gray-600">
         <Loader2 className="w-6 h-6 animate-spin mb-2 text-blue-600" />
@@ -43,6 +48,9 @@ export default function ProtectedRoute({ children }) {
     );
   }
 
-  if (!isValid) return <Navigate to="/login" replace />;
+  if (!isValid) {
+    return <Navigate to="/login" replace />;
+  }
+
   return children;
 }

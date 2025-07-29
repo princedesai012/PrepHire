@@ -27,8 +27,8 @@ const AppRoutes = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/home" element={<Index />} />
         <Route path="/analyze-resume" element={<AnalyzeResume />} />
-        {/* <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} /> */}
-        {/* <Route path="/interview" element={<ProtectedRoute><InterviewPage /></ProtectedRoute>} /> */}
+        <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>}/>
+        <Route path="/interview" element={<ProtectedRoute><InterviewPage /></ProtectedRoute>}/>
       </Routes>
     </BrowserRouter>
   );
