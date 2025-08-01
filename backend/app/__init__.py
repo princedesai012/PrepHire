@@ -1,0 +1,32 @@
+from flask import Flask
+from flask_cors import CORS
+from flask_jwt_extended import JWTManager
+from .config import Config
+from .utils.jwt_utils import jwt, jwt_blocklist
+from .services import db
+from .routes.auth import auth_bp
+from .routes.resume import resume_bp
+
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
+
+    # Initialize extensions
+    CORS(app, supports_credentials=True)
+    jwt.init_app(app)
+    
+    # Set the token blocklist loader
+    jwt_blocklist(jwt)
+
+    # Initialize the database connection
+    # db.init_db()
+
+    # Register blueprints
+    app.register_blueprint(auth_bp, url_prefix='/api')
+    app.register_blueprint(resume_bp, url_prefix='/api')
+
+    @app.route("/")
+    def home():
+        return "AI Resume Analyzer Backend is Running"
+
+    return app
