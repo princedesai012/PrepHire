@@ -4,19 +4,19 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
-import Index from "./pages/Index.";
+import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Account from "./pages/Account";
 import AnalyzeResume from "./pages/AnalyzeResume";
-import InterviewPage from "./pages/InterviewPage";
+import InterviewPage from "./pages/InterviewPage"; // 👈 This should point to your InterviewSetup UI
 import ScrollToTop from "@/components/ScrollToTop";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import useLogoutOnClose from "@/hooks/useLogoutOnClose";
-
-// ✅ Separate inner component to use hook
+import InterviewSetup from "./pages/InterviewSetup";
+// ✅ Internal route wrapper to use hook
 const AppRoutes = () => {
-  useLogoutOnClose(); // This hook will now work properly
+  useLogoutOnClose(); // Handles auto logout on tab close
 
   return (
     <BrowserRouter>
@@ -27,8 +27,11 @@ const AppRoutes = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/home" element={<Index />} />
         <Route path="/analyze-resume" element={<AnalyzeResume />} />
-        {/* <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} /> */}
-        {/* <Route path="/interview" element={<ProtectedRoute><InterviewPage /></ProtectedRoute>} /> */}
+
+        {/* ✅ Protected routes */}
+        <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
+        <Route path="/interview" element={<InterviewPage />} />
+      <Route path="/interview-choice" element={<InterviewSetup />} />
       </Routes>
     </BrowserRouter>
   );

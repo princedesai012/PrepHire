@@ -82,7 +82,7 @@ const Hero = () => {
             variant="outline"
             size="lg"
             className="relative px-8 py-4 text-lg font-semibold rounded-full border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50/80 transition-all duration-300 hover:scale-105 group bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-xl"
-            onClick={() => navigate('/interview')}
+            onClick={() => navigate('/interview-choice')}
           >
             <span className="relative z-10 flex items-center">
               <Play className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform duration-300" />

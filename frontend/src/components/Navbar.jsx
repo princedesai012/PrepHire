@@ -7,7 +7,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 
 const navigationItems = [
   { name: "Analyze Resume", href: "/analyze-resume" },
-  { name: "Interview Practice", href: "/interview" },
+  { name: "Interview Practice", href: "/interview-choice" },
   { name: "About", href: "#about" },
   { name: "Contact", href: "#contact" },
 ];
