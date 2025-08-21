@@ -14,6 +14,8 @@ import ScrollToTop from "@/components/ScrollToTop";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import useLogoutOnClose from "@/hooks/useLogoutOnClose";
 import InterviewSetup from "./pages/InterviewSetup";
+import ForgotPassword from "./pages/ForgotPassword"; // Import the new component
+
 // ✅ Internal route wrapper to use hook
 const AppRoutes = () => {
   // useLogoutOnClose(); // Handles auto logout on tab close
@@ -32,6 +34,9 @@ const AppRoutes = () => {
         <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
         <Route path="/interview" element={<InterviewPage />} />
       <Route path="/interview-choice" element={<InterviewSetup />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+        {/* You will also need a route for the actual password reset page */}
+        {/* <Route path="/reset-password" element={<ResetPassword />} />  */}
       </Routes>
     </BrowserRouter>
   );

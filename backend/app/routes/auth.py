@@ -12,7 +12,9 @@ from google.auth.transport import requests as google_requests
 from app.config import Config
 from app.services.db import users_collection
 from app.utils.jwt_utils import TOKEN_BLOCKLIST
-
+from flask_mail import Message
+from app import mail # Import the mail object from your app factory
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 auth_bp = Blueprint('auth_bp', __name__)
 
 # ---------------- SIGNUP ----------------
@@ -174,3 +176,56 @@ def get_user_info():
         return jsonify(user_info), 200
     else:
         return jsonify({"message": "User not found"}), 404
+    
+s = URLSafeTimedSerializer(Config.SECRET_KEY_RESET)
+@auth_bp.route("/forgot-password", methods=["POST"])
+def forgot_password():
+    data = request.get_json()
+    email = data.get("email")
+    if not email:
+        return jsonify({"message": "Email is required"}), 400
+
+    user = users_collection.find_one({"email": email})
+    
+    # Send a generic message even if the email doesn't exist for security
+    if user:
+        # Create a temporary token valid for 1 hour
+        token = s.dumps(email, salt='password-reset-salt')
+        
+        # The URL below should point to your frontend's reset password page
+        reset_url = f"http://localhost:3000/reset-password?token={token}"
+        
+        msg = Message("Password Reset Request for PrepHire", recipients=[email])
+        msg.body = f"Hello,\n\nTo reset your password, visit the following link:\n{reset_url}\n\nIf you did not request a password reset, please ignore this email."
+        
+        mail.send(msg)
+
+    return jsonify({"message": "If the email is valid, a password reset link has been sent."}), 200
+
+# ---------------- RESET PASSWORD ----------------
+@auth_bp.route("/reset-password", methods=["POST"])
+def reset_password():
+    data = request.get_json()
+    token = data.get("token")
+    new_password = data.get("newPassword")
+
+    if not token or not new_password:
+        return jsonify({"message": "Token and new password are required"}), 400
+
+    try:
+        # Load the email from the token, with a 1-hour expiration
+        email = s.loads(token, salt='password-reset-salt', max_age=3600)
+    except SignatureExpired:
+        return jsonify({"message": "The token has expired"}), 401
+    except (BadTimeSignature, ValueError):
+        return jsonify({"message": "Invalid token"}), 401
+
+    user = users_collection.find_one({"email": email})
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    # Hash and update the new password
+    hashed_pw = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+    users_collection.update_one({"email": email}, {"$set": {"password": hashed_pw}})
+
+    return jsonify({"message": "Password has been reset successfully"}), 200

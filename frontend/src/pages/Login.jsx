@@ -106,7 +106,7 @@ const Login = () => {
                 className="bg-primary text-primary-foreground font-semibold px-6 py-2 rounded-xl transition-all duration-300 hover:bg-opacity-90 hover:border hover:border-dark hover:scale-105 hover:shadow-lg hover:shadow-primary/50">
                 Next →
               </button>
-              <a href="#" className="text-sm text-muted-foreground hover:underline">
+              <a href="/forgot-password" className="text-sm text-muted-foreground hover:underline">
                 Forgot Password
               </a>
             </div>

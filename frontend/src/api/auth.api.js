@@ -88,3 +88,34 @@ export const signupUser = async (username, email, password) => {
       throw err;
     }
   };
+
+  export const forgotPasswordRequest = async (email) => {
+    const res = await fetch(`${API_BASE_URL}/forgot-password`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
+  
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to send reset email");
+  
+    return data;
+  };
+  
+  // You will also need a function for the password reset itself (to be used on a new page)
+  export const resetPassword = async (token, newPassword) => {
+    const res = await fetch(`${API_BASE_URL}/reset-password`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ token, newPassword }),
+    });
+  
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to reset password");
+  
+    return data;
+  };
