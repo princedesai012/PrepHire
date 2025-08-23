@@ -3,6 +3,8 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom"; // 1. Import useNavigate
+import { startInterview } from "@/api/interview.api"; // 2. Import the API function
 import {
   Select,
   SelectContent,
@@ -58,6 +60,8 @@ export default function InterviewSetup() {
   const [duration, setDuration] = useState("30");
   const [resumeBased, setResumeBased] = useState(false);
   const [resumeFile, setResumeFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false); // Add loading state
+  const navigate = useNavigate(); // 3. Initialize the navigate function
 
   const handleResumeUpload = (event) => {
     const file = event.target.files[0];
@@ -76,7 +80,7 @@ export default function InterviewSetup() {
     }
   };
 
-  const handleStartInterview = () => {
+  const handleStartInterview = async () => {
     if (resumeBased && !resumeFile) {
       alert("Please upload your resume before starting.");
       return;
@@ -94,6 +98,27 @@ export default function InterviewSetup() {
       resumeBased,
       resumeFile,
     });
+
+    try {
+      const settings = {
+        selectedDomain: resumeBased ? "Resume-Based" : selectedDomain,
+        selectedRole: resumeBased ? "Resume-Based" : selectedRole,
+        duration,
+        resumeBased,
+        // Note: Resume file is not sent yet. This will be a future step.
+      };
+
+      const data = await startInterview(settings);
+
+      // Store session data and navigate to the interview page
+      sessionStorage.setItem("interviewSession", JSON.stringify(data));
+      navigate("/interview");
+
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -227,15 +252,16 @@ export default function InterviewSetup() {
 
             {/* Start Button */}
             <Button
-              className="w-full mt-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white font-semibold py-3 rounded-xl hover:scale-105 hover:shadow-xl transition-all duration-300"
-              onClick={handleStartInterview}
-              disabled={
-                (resumeBased && !resumeFile) ||
-                (!resumeBased && (!selectedDomain || !selectedRole))
-              }
-            >
-              Start Interview
-            </Button>
+        className="w-full mt-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white font-semibold py-3 rounded-xl hover:scale-105 hover:shadow-xl transition-all duration-300"
+        onClick={handleStartInterview}
+        disabled={
+          isLoading ||
+          (resumeBased && !resumeFile) ||
+          (!resumeBased && (!selectedDomain || !selectedRole))
+        }
+      >
+        {isLoading ? "Starting..." : "Start Interview"}
+      </Button>
           </Card>
 
           <p className="text-center text-gray-500 mt-6 text-sm">

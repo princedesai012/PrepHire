@@ -1,5 +1,8 @@
+# backend/app/services/gemini_service.py
+
 import requests
 import json
+import os
 
 def call_gemini_api(prompt):
     """
@@ -9,20 +12,30 @@ def call_gemini_api(prompt):
     payload = {
         "contents": [{"parts": [{"text": prompt}]}]
     }
-    api_key = ""  # api key
-    api_url = f"[https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=](https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=){api_key}"
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        print("Error: GEMINI_API_KEY environment variable not set.")
+        return None
+
+    api_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={api_key}"
 
     try:
         response = requests.post(api_url, headers={'Content-Type': 'application/json'}, data=json.dumps(payload))
-        response.raise_for_status()  
+        response.raise_for_status()
         result = response.json()
 
+        # --- THIS IS THE CORRECTED LINE ---
         if result.get('candidates') and result['candidates'][0].get('content') and result['candidates'][0]['content'].get('parts'):
             return result['candidates'][0]['content']['parts'][0]['text']
         else:
+            # Check for a block reason
+            if result.get('promptFeedback', {}).get('blockReason'):
+                reason = result['promptFeedback']['blockReason']
+                print(f"Gemini API call blocked. Reason: {reason}")
+                return f"My response was blocked due to: {reason}. Please try a different prompt."
             print("Unexpected Gemini API response structure:", result)
-            return "An unexpected error occurred. Please try again."
+            return None
 
     except requests.exceptions.RequestException as e:
         print(f"Error calling Gemini API: {e}")
-        return "Failed to connect to the AI service. Please check your network and try again."
+        return None

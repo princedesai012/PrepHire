@@ -2,7 +2,7 @@
 import uuid
 from flask import Blueprint, request, jsonify
 from ..services.gemini_service import call_gemini_api
-from services.db import sessions_collection  # CORRECTED IMPORT STATEMENT
+from ..services.db import sessions_collection  # CORRECTED IMPORT STATEMENT
 
 # Create a Blueprint for interview-related routes
 interview_bp = Blueprint('interview', __name__)
@@ -48,38 +48,49 @@ def start_interview():
         print(f"Error starting interview: {e}")
         return jsonify({'error': 'Failed to start interview.'}), 500
 
+# backend/app/routes/interview.py
+
 @interview_bp.route('/answer', methods=['POST'])
 def handle_answer():
-    """
-    API endpoint to continue the interview.
-    Receives a user's answer and updates the session in MongoDB.
-    """
     data = request.json
     session_id = data.get('sessionId')
     answer = data.get('answer')
 
-    # Find the session document in MongoDB
     session = sessions_collection.find_one({'_id': session_id})
     if not session:
         return jsonify({'error': 'Session not found.'}), 404
 
-    # Add the user's answer to the session history
     session['history'].append({'role': 'user', 'text': answer})
 
-    # Construct a prompt for the next question based on conversation history
-    prompt = f"Based on the following conversation, what is a good follow-up question for an interview? The interview is for a {session['settings']['selectedRole']} role in the {session['settings']['selectedDomain']} domain.\n\nConversation history:\n"
+    # --- START OF THE NEW, ADVANCED PROMPT ---
+    conversation_history = ""
     for msg in session['history']:
-        sender = 'You' if msg['role'] == 'user' else 'Interviewer'
-        prompt += f"{sender}: {msg['text']}\n"
-    prompt += "\nNext question:"
+        if msg['role'] == 'user':
+            conversation_history += f"Candidate: {msg['text']}\n"
+        elif msg['role'] == 'model':
+            conversation_history += f"Interviewer: {msg['text']}\n"
+
+    prompt = (
+        f"You are an expert AI interviewer named Alex conducting a mock interview for a "
+        f"{session['settings']['selectedRole']} position. Your personality is professional, adaptable, and encouraging. "
+        f"Your primary goal is to assess the candidate's skills across different topics, not to get stuck on one detail.\n\n"
+        f"**Your Rules of Engagement:**\n"
+        f"1. **ASK INSIGHTFUL QUESTIONS:** Ask open-ended questions that encourage the candidate to share details.\n"
+        f"2. **DO NOT GET STUCK:** If the candidate gives a very short, evasive, or uncooperative answer (e.g., 'yes', 'no', 'MERN stack' with no details), try to rephrase or ask for an example ONCE. If they still provide no detail, **you must gracefully pivot to a completely new topic or skill area.** For example, move from a technical question to a behavioral one.\n"
+        f"3. **RESPECT THE CANDIDATE'S WISHES:** If the candidate asks to change the topic or end the interview, **you must honor their request immediately and politely.** Do not challenge them or ask why.\n"
+        f"4. **MAINTAIN CHARACTER:** You are Alex, the interviewer. Do not break character. Ask the question directly.\n\n"
+        f"**Conversation History:**\n{conversation_history}\n"
+        f"Based on the rules and the history, ask the very next single question directly to the candidate."
+    )
+    # --- END OF THE NEW, ADVANCED PROMPT ---
 
     try:
         ai_response = call_gemini_api(prompt)
 
-        # Add the AI's response to the session history
+        if ai_response is None:
+            return jsonify({'error': 'Failed to get a response from the AI service.'}), 500
+
         session['history'].append({'role': 'model', 'text': ai_response})
-        
-        # Update the session document in MongoDB
         sessions_collection.update_one({'_id': session_id}, {'$set': {'history': session['history']}})
 
         return jsonify({'question': ai_response})

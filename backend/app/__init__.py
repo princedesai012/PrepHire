@@ -23,10 +23,12 @@ def create_app():
     # db.init_db()
 
     # Register blueprints
+    from .routes.interview import interview_bp
     from .routes.auth import auth_bp
     from .routes.resume import resume_bp
     app.register_blueprint(auth_bp, url_prefix='/api')
     app.register_blueprint(resume_bp, url_prefix='/api')
+    app.register_blueprint(interview_bp, url_prefix='/api/interview')
 
     @app.route("/")
     def home():
