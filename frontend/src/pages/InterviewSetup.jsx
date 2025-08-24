@@ -4,6 +4,7 @@ import Footer from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom"; // 1. Import useNavigate
+import { toast } from "sonner";
 import { startInterview } from "@/api/interview.api"; // 2. Import the API function
 import {
   Select,
@@ -82,40 +83,40 @@ export default function InterviewSetup() {
 
   const handleStartInterview = async () => {
     if (resumeBased && !resumeFile) {
-      alert("Please upload your resume before starting.");
+      toast.error("Please upload your resume before starting.");
       return;
     }
     if (!resumeBased && (!selectedDomain || !selectedRole)) {
-      alert("Please select both interview domain and role");
+      toast.error("Please select both interview domain and role.");
       return;
     }
 
-    console.log("Starting interview with:", {
-      selectedDomain,
-      selectedRole,
-      inputMode,
-      duration,
-      resumeBased,
-      resumeFile,
-    });
+    setIsLoading(true);
 
+    // --- Create a FormData object to send the file and settings ---
+    const formData = new FormData();
+    formData.append('duration', duration);
+    formData.append('resumeBased', resumeBased);
+
+    if (resumeBased) {
+      formData.append('resumeFile', resumeFile); // Append the actual file object
+      formData.append('selectedDomain', 'Resume-Based');
+      formData.append('selectedRole', 'Resume-Based');
+    } else {
+      formData.append('selectedDomain', selectedDomain);
+      formData.append('selectedRole', selectedRole);
+    }
+    
     try {
-      const settings = {
-        selectedDomain: resumeBased ? "Resume-Based" : selectedDomain,
-        selectedRole: resumeBased ? "Resume-Based" : selectedRole,
-        duration,
-        resumeBased,
-        // Note: Resume file is not sent yet. This will be a future step.
-      };
+      // The startInterview function now expects FormData
+      const data = await startInterview(formData);
+      toast.success("Interview session started!");
 
-      const data = await startInterview(settings);
-
-      // Store session data and navigate to the interview page
       sessionStorage.setItem("interviewSession", JSON.stringify(data));
       navigate("/interview");
 
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message || "Failed to start interview.");
     } finally {
       setIsLoading(false);
     }
