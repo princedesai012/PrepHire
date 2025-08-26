@@ -1,6 +1,27 @@
 import { useState, useRef, useEffect } from "react";
 import { submitAnswer } from "@/api/interview.api";
 import { toast } from "sonner";
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+
+// Microphone icon as an inline SVG
+const MicIcon = ({ isListening }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={`w-5 h-5 ${isListening ? 'text-red-500' : 'text-gray-500'}`}
+  >
+    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+    <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+    <line x1="12" x2="12" y1="19" y2="22" />
+  </svg>
+);
 
 export default function ChatBox() {
   const [messages, setMessages] = useState([]);
@@ -9,6 +30,17 @@ export default function ChatBox() {
   const [isLoading, setIsLoading] = useState(false);
   const bottomRef = useRef(null);
 
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition
+  } = useSpeechRecognition();
+
+  useEffect(() => {
+    setInput(transcript);
+  }, [transcript]);
+
   // Load the initial question from session storage
   useEffect(() => {
     const sessionData = sessionStorage.getItem("interviewSession");
@@ -16,7 +48,7 @@ export default function ChatBox() {
       const { sessionId, question } = JSON.parse(sessionData);
       setSessionId(sessionId);
       // Start with the first AI question
-      setMessages([{ sender: "AI", text: question }]);
+      setMessages([{ sender: "Interviewer", text: question }]);
     }
   }, []);
 
@@ -26,6 +58,7 @@ export default function ChatBox() {
     setIsLoading(true);
     const userAnswer = input; // Store the user's answer
     setInput(""); // Clear the input field immediately
+    resetTranscript(); // Reset the transcript
 
     try {
       const response = await submitAnswer(sessionId, userAnswer);
@@ -45,10 +78,19 @@ export default function ChatBox() {
     }
   };
 
-  // Scroll to the bottom whenever messages change
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isLoading]);
+
+  const handleVoiceRecording = () => {
+    if (listening) {
+      SpeechRecognition.stopListening();
+    } else {
+      resetTranscript();
+      SpeechRecognition.startListening({ continuous: true });
+    }
+  };
+
+  if (!browserSupportsSpeechRecognition) {
+    return <span>Browser doesn't support speech recognition.</span>;
+  }
 
   return (
     <div className="flex flex-col h-full">
@@ -69,7 +111,6 @@ export default function ChatBox() {
           </div>
         ))}
         
-        {/* The "Typing..." indicator is now separate and temporary */}
         {isLoading && (
           <div className="flex flex-col max-w-[80%] px-4 py-2 rounded-xl text-sm shadow-sm bg-gray-200 text-gray-900 self-start">
             <span className="font-medium block mb-1">AI</span>
@@ -90,6 +131,12 @@ export default function ChatBox() {
           placeholder="Type your answer..."
           disabled={isLoading}
         />
+        <button
+          onClick={handleVoiceRecording}
+          className="p-2"
+        >
+          <MicIcon isListening={listening} />
+        </button>
         <button
           onClick={sendMessage}
           className="bg-blue-600 hover:bg-blue-700 transition text-white px-4 sm:px-5 py-2 text-sm font-medium"
