@@ -26,9 +26,11 @@ def create_app():
     from .routes.interview import interview_bp
     from .routes.auth import auth_bp
     from .routes.resume import resume_bp
+    # from .routes.aptitude import aptitude_bp
     app.register_blueprint(auth_bp, url_prefix='/api')
     app.register_blueprint(resume_bp, url_prefix='/api')
     app.register_blueprint(interview_bp, url_prefix='/api/interview')
+    # app.register_blueprint(aptitude_bp, url_prefix='/api/aptitude')  # Add this line
 
     @app.route("/")
     def home():

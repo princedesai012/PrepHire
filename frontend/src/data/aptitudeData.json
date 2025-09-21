@@ -1,0 +1,443 @@
+{
+  "quantitative": [
+    {
+      "id": 1,
+      "question": "If a shirt costs $40 after a 20% discount, what was its original price?",
+      "options": ["$48", "$50", "$52", "$55"],
+      "answer": 1,
+      "explanation": "Let original price be x. Then x - 0.2x = 40 → 0.8x = 40 → x = 40/0.8 = $50"
+    },
+    {
+      "id": 2,
+      "question": "A train travels 300 km in 5 hours. What is its average speed?",
+      "options": ["50 km/h", "60 km/h", "65 km/h", "70 km/h"],
+      "answer": 1,
+      "explanation": "Average speed = Total distance / Total time = 300 km / 5 h = 60 km/h"
+    },
+    {
+      "id": 3,
+      "question": "If x + y = 15 and x - y = 5, what is the value of x?",
+      "options": ["5", "10", "15", "20"],
+      "answer": 1,
+      "explanation": "Add the two equations: (x+y)+(x-y)=15+5 → 2x=20 → x=10"
+    },
+    {
+      "id": 4,
+      "question": "What is 35% of 80?",
+      "options": ["28", "30", "32", "35"],
+      "answer": 0,
+      "explanation": "35% of 80 = (35/100) × 80 = 0.35 × 80 = 28"
+    },
+    {
+      "id": 5,
+      "question": "A rectangular field is 50m long and 30m wide. What is its area?",
+      "options": ["1500 m²", "1600 m²", "1700 m²", "1800 m²"],
+      "answer": 0,
+      "explanation": "Area of rectangle = length × width = 50m × 30m = 1500 m²"
+    },
+    {
+      "id": 6,
+      "question": "If 3x + 7 = 22, what is the value of x?",
+      "options": ["5", "6", "7", "8"],
+      "answer": 0,
+      "explanation": "3x + 7 = 22 → 3x = 15 → x = 5"
+    },
+    {
+      "id": 7,
+      "question": "A shopkeeper sells a product at 20% profit. If the cost price is $100, what is the selling price?",
+      "options": ["$110", "$115", "$120", "$125"],
+      "answer": 2,
+      "explanation": "Selling price = Cost price + Profit = 100 + (20% of 100) = 100 + 20 = $120"
+    },
+    {
+      "id": 8,
+      "question": "What is the average of 12, 15, 18, 21, and 24?",
+      "options": ["16", "17", "18", "19"],
+      "answer": 2,
+      "explanation": "Average = (12+15+18+21+24)/5 = 90/5 = 18"
+    },
+    {
+      "id": 9,
+      "question": "If 5 workers can complete a task in 12 days, how many days will 6 workers take?",
+      "options": ["8 days", "9 days", "10 days", "11 days"],
+      "answer": 2,
+      "explanation": "Total work = 5 workers × 12 days = 60 worker-days. Time for 6 workers = 60/6 = 10 days"
+    },
+    {
+      "id": 10,
+      "question": "Simplify: (2/3) ÷ (4/9)",
+      "options": ["1/2", "2/3", "3/2", "9/8"],
+      "answer": 2,
+      "explanation": "(2/3) ÷ (4/9) = (2/3) × (9/4) = 18/12 = 3/2"
+    },
+    {
+      "id": 11,
+      "question": "A car travels 240 km in 4 hours. How long will it take to travel 600 km?",
+      "options": ["8 hours", "9 hours", "10 hours", "12 hours"],
+      "answer": 2,
+      "explanation": "Speed = 240 km / 4 h = 60 km/h. Time for 600 km = 600/60 = 10 hours"
+    },
+    {
+      "id": 12,
+      "question": "What is the next number in the series: 2, 6, 12, 20, 30, ...?",
+      "options": ["40", "42", "44", "46"],
+      "answer": 1,
+      "explanation": "The pattern is n×(n+1): 1×2=2, 2×3=6, 3×4=12, 4×5=20, 5×6=30, so 6×7=42"
+    },
+    {
+      "id": 13,
+      "question": "If a number is increased by 20% and then decreased by 20%, what is the net change?",
+      "options": ["4% increase", "4% decrease", "No change", "2% decrease"],
+      "answer": 1,
+      "explanation": "Let number be 100. After 20% increase: 120. After 20% decrease: 120 - 24 = 96. Net change = 4% decrease"
+    },
+    {
+      "id": 14,
+      "question": "What is the value of 5² + 3³?",
+      "options": ["34", "42", "52", "62"],
+      "answer": 2,
+      "explanation": "5² = 25, 3³ = 27. Sum = 25 + 27 = 52"
+    },
+    {
+      "id": 15,
+      "question": "A sum of money doubles itself in 5 years at simple interest. What is the rate of interest?",
+      "options": ["15%", "18%", "20%", "25%"],
+      "answer": 2,
+      "explanation": "If principal P doubles to 2P, then interest = P. Rate = (Interest × 100)/(Principal × Time) = (P×100)/(P×5) = 20%"
+    },
+    {
+      "id": 36,
+      "question": "A tap can fill a tank in 8 hours and another tap can empty it in 16 hours. If both taps are opened simultaneously, the time to fill the tank is:",
+      "options": ["8 hours", "10 hours", "16 hours", "24 hours"],
+      "answer": 2,
+      "explanation": "Rate of filling = 1/8. Rate of emptying = 1/16. Net rate = 1/8 - 1/16 = 1/16. So, time taken = 16 hours."
+    },
+    {
+      "id": 37,
+      "question": "In how many ways can the letters of the word 'LEADER' be arranged?",
+      "options": ["72", "144", "360", "720"],
+      "answer": 2,
+      "explanation": "The word LEADER has 6 letters, with 'E' repeated twice. Arrangement = 6! / 2! = 720 / 2 = 360."
+    },
+    {
+      "id": 38,
+      "question": "Two trains of length 120m and 80m are running in the same direction with speeds of 40 km/h and 50 km/h respectively. The time taken by them to cross each other is:",
+      "options": ["20 sec", "36 sec", "72 sec", "144 sec"],
+      "answer": 2,
+      "explanation": "Relative speed = 50-40 = 10 km/h = 10 * (5/18) m/s. Total distance = 120+80 = 200m. Time = Distance/Speed = 200 / (50/18) = (200 * 18) / 50 = 72 sec."
+    },
+    {
+      "id": 39,
+      "question": "A man buys a cycle for Rs. 1400 and sells it at a loss of 15%. What is the selling price of the cycle?",
+      "options": ["Rs. 1090", "Rs. 1190", "Rs. 1202", "Rs. 1160"],
+      "answer": 1,
+      "explanation": "Loss = 15% of 1400 = 0.15 * 1400 = 210. Selling Price = Cost Price - Loss = 1400 - 210 = Rs. 1190."
+    },
+    {
+      "id": 40,
+      "question": "The ratio of two numbers is 3:4 and their HCF is 4. Their LCM is:",
+      "options": ["12", "16", "24", "48"],
+      "answer": 3,
+      "explanation": "Numbers are 3*4=12 and 4*4=16. LCM of 12 and 16 is 48. Alternatively, Product of numbers = HCF * LCM → 12 * 16 = 4 * LCM → LCM = 192/4 = 48."
+    },
+    {
+      "id": 41,
+      "question": "A bag contains 2 red, 3 green and 2 blue balls. Two balls are drawn at random. What is the probability that none of the balls drawn is blue?",
+      "options": ["10/21", "11/21", "2/7", "5/7"],
+      "answer": 0,
+      "explanation": "Total balls = 7. Non-blue balls = 5. P(no blue) = (Ways to choose 2 from 5) / (Ways to choose 2 from 7) = (5C2) / (7C2) = 10 / 21."
+    },
+    {
+      "id": 42,
+      "question": "What is the compound interest on Rs. 20,000 for 2 years at 10% per annum?",
+      "options": ["Rs. 4000", "Rs. 4200", "Rs. 4400", "Rs. 2400"],
+      "answer": 1,
+      "explanation": "Amount = P(1 + R/100)^t = 20000(1 + 10/100)^2 = 20000 * (1.1)^2 = 24200. CI = Amount - Principal = 24200 - 20000 = Rs. 4200."
+    },
+    {
+      "id": 43,
+      "question": "If 15 men can do a piece of work in 10 days, how many men will be required to do the same work in 25 days?",
+      "options": ["6 men", "8 men", "10 men", "12 men"],
+      "answer": 0,
+      "explanation": "Let the required number of men be x. M1*D1 = M2*D2 → 15 * 10 = x * 25 → 150 = 25x → x = 6 men."
+    },
+    {
+      "id": 44,
+      "question": "The surface area of a cube is 150 sq. cm. What is the length of its edge?",
+      "options": ["3 cm", "4 cm", "5 cm", "6 cm"],
+      "answer": 2,
+      "explanation": "Surface area of a cube = 6a². So, 6a² = 150 → a² = 25 → a = 5 cm."
+    },
+    {
+      "id": 45,
+      "question": "A mixture of 40 litres of milk and water contains 10% water. How much water should be added to make the water 20% in the new mixture?",
+      "options": ["4 litres", "5 litres", "6 litres", "8 litres"],
+      "answer": 1,
+      "explanation": "Initial mixture: Water = 4L, Milk = 36L. Let x be water added. New mixture: Water = 4+x, Total = 40+x. We want (4+x)/(40+x) = 0.20 → 4+x = 8+0.2x → 0.8x = 4 → x = 5 litres."
+    }
+  ],
+  "logical": [
+    {
+      "id": 16,
+      "question": "Complete the series: 2, 3, 5, 8, 12, ...",
+      "options": ["15", "17", "19", "21"],
+      "answer": 1,
+      "explanation": "The pattern is +1, +2, +3, +4, so next is +5: 12+5=17"
+    },
+    {
+      "id": 17,
+      "question": "If all roses are flowers and some flowers fade quickly, then:",
+      "options": [
+        "All roses fade quickly",
+        "Some roses fade quickly",
+        "No roses fade quickly",
+        "Cannot be determined"
+      ],
+      "answer": 3,
+      "explanation": "We only know that some flowers fade quickly, but we don't know if roses are among those flowers."
+    },
+    {
+      "id": 18,
+      "question": "Which number is the odd one out? 2, 4, 8, 16, 32, 64, 100",
+      "options": ["8", "16", "64", "100"],
+      "answer": 3,
+      "explanation": "All numbers except 100 are powers of 2: 2^1=2, 2^2=4, 2^3=8, 2^4=16, 2^5=32, 2^6=64"
+    },
+    {
+      "id": 19,
+      "question": "If Monday is the first day of the month, what day is the 27th?",
+      "options": ["Friday", "Saturday", "Sunday", "Monday"],
+      "answer": 1,
+      "explanation": "27 days from 1st: 27-1=26 days later. 26÷7=3 weeks and 5 days. Monday + 5 days = Saturday"
+    },
+    {
+      "id": 20,
+      "question": "A is taller than B, C is shorter than A, but taller than B. Who is the tallest?",
+      "options": ["A", "B", "C", "Cannot be determined"],
+      "answer": 0,
+      "explanation": "A > B, A > C > B. So A is taller than both B and C."
+    },
+    {
+      "id": 21,
+      "question": "Complete the analogy: Book is to Reading as Fork is to _____",
+      "options": ["Eating", "Writing", "Cooking", "Cutting"],
+      "answer": 0,
+      "explanation": "A book is used for reading, just as a fork is used for eating."
+    },
+    {
+      "id": 22,
+      "question": "If all cats are animals and some animals are pets, then which statement must be true?",
+      "options": [
+        "All cats are pets",
+        "Some cats are pets",
+        "No cats are pets",
+        "Some pets are cats"
+      ],
+      "answer": 3,
+      "explanation": "Since all cats are animals and some animals are pets, it follows that some pets are cats."
+    },
+    {
+      "id": 46,
+      "question": "In a certain code, 'ROAD' is written as 'URDG'. How is 'SWAN' written in that code?",
+      "options": ["VXDQ", "VZDQ", "VZCQ", "UXDQ"],
+      "answer": 1,
+      "explanation": "Each letter is moved three steps forward. S+3=V, W+3=Z, A+3=D, N+3=Q."
+    },
+    {
+      "id": 47,
+      "question": "Pointing to a photograph, a man said, 'I have no brother or sister but that man's father is my father's son.' Whose photograph was it?",
+      "options": ["His own", "His Son", "His Father", "His Nephew"],
+      "answer": 1,
+      "explanation": "'My father's son' is the man himself. So, the man in the photograph is his son."
+    },
+    {
+      "id": 48,
+      "question": "Find the next term in the series: A, D, I, P, ...",
+      "options": ["W", "X", "Y", "Z"],
+      "answer": 2,
+      "explanation": "The series consists of positions that are perfect squares: 1st (A=1²), 4th (D=2²), 9th (I=3²), 16th (P=4²). The next is 25th (Y=5²)."
+    },
+    {
+      "id": 49,
+      "question": "Statement: All pens are books. All books are chairs. Conclusions: I. Some chairs are pens. II. All books are pens.",
+      "options": ["Only I follows", "Only II follows", "Both I and II follow", "Neither I nor II follows"],
+      "answer": 0,
+      "explanation": "Since all pens are books and all books are chairs, it follows that all pens are chairs. Therefore, some chairs must be pens. The second conclusion is a reversal and not necessarily true."
+    },
+    {
+      "id": 50,
+      "question": "A man walks 5 km East, then turns South and walks 5 km. He then turns East again and walks 5 km. Finally, he turns North and walks 10 km. How far is he from his starting point?",
+      "options": ["5 km", "10 km", "5√5 km", "10√2 km"],
+      "answer": 3,
+      "explanation": "His net movement East is 5+5=10 km. His net movement North is 10-5=5 km. Using Pythagoras theorem, distance = √(10² + 5²) = √(100 + 25) = √125 = 5√5 km."
+    },
+    {
+      "id": 51,
+      "question": "Which word does NOT belong with the others?",
+      "options": ["Inch", "Ounce", "Centimeter", "Yard"],
+      "answer": 1,
+      "explanation": "Ounce is a unit of weight, while the others are units of length."
+    },
+    {
+      "id": 52,
+      "question": "If 'A' is substituted by 2, 'B' by 4, 'C' by 6 and so on, then what will be the total value of the letters of the word 'HEAT'?",
+      "options": ["60", "62", "64", "68"],
+      "answer": 3,
+      "explanation": "The value of a letter is 2 times its position. H(8)=16, E(5)=10, A(1)=2, T(20)=40. The sum is 16 + 10 + 2 + 40 = 68."
+    },
+    {
+      "id": 53,
+      "question": "Five friends P, Q, R, S and T are sitting in a row facing North. Here S is between T and Q and Q is to the immediate left of R. P is to the immediate left of T. Who is in the middle?",
+      "options": ["S", "T", "Q", "R"],
+      "answer": 0,
+      "explanation": "The arrangement is P, T, S, Q, R. The person in the middle is S."
+    },
+    {
+      "id": 54,
+      "question": "Choose the pair that has a relationship similar to 'Doctor : Hospital'.",
+      "options": ["Teacher : School", "Farmer : Village", "Clerk : Office", "Chef : Food"],
+      "answer": 0,
+      "explanation": "A doctor's primary workplace is a hospital, just as a teacher's primary workplace is a school. While a clerk works in an office, the relationship isn't as defining."
+    },
+    {
+      "id": 55,
+      "question": "Statement: Should there be a complete ban on the use of pesticides in agriculture? Arguments: I. Yes, it will lead to healthier food and a less polluted environment. II. No, it will lead to a massive decrease in crop yield, causing food shortages.",
+      "options": ["Only argument I is strong", "Only argument II is strong", "Both I and II are strong", "Neither I nor II is strong"],
+      "answer": 2,
+      "explanation": "Both arguments present significant and valid consequences of the proposed action. Argument I points to the positive health and environmental impact, while Argument II points to the critical negative impact on food production. Both are strong considerations."
+    }
+  ],
+  "verbal": [
+    {
+      "id": 23,
+      "question": "Choose the correct synonym for 'BENEVOLENT':",
+      "options": ["Cruel", "Kind", "Stingy", "Selfish"],
+      "answer": 1,
+      "explanation": "Benevolent means well-meaning and kindly, so the synonym is kind."
+    },
+    {
+      "id": 24,
+      "question": "Which sentence is grammatically correct?",
+      "options": [
+        "She don't like apples",
+        "He doesn't likes apples",
+        "They doesn't like apples",
+        "He doesn't like apples"
+      ],
+      "answer": 3,
+      "explanation": "The correct form is 'He doesn't like apples' - third person singular with 'does' and base verb."
+    },
+    {
+      "id": 25,
+      "question": "Choose the word that is opposite in meaning to 'TRANSPARENT':",
+      "options": ["Clear", "Opaque", "Visible", "Lucid"],
+      "answer": 1,
+      "explanation": "Transparent means see-through, while opaque means not see-through."
+    },
+    {
+      "id": 26,
+      "question": "Identify the correctly spelled word:",
+      "options": ["Accomodate", "Acommodate", "Accommodate", "Acomodate"],
+      "answer": 2,
+      "explanation": "The correct spelling is 'accommodate' with two 'c's and two 'm's."
+    },
+    {
+      "id": 27,
+      "question": "Choose the appropriate preposition: She is allergic _____ cats.",
+      "options": ["with", "to", "for", "at"],
+      "answer": 1,
+      "explanation": "The correct preposition is 'to' - allergic to something."
+    },
+    {
+      "id": 28,
+      "question": "What is the plural form of 'criterion'?",
+      "options": ["Criterions", "Criterias", "Criteria", "Criterion"],
+      "answer": 2,
+      "explanation": "The plural of criterion is criteria, following Greek etymology."
+    },
+    {
+      "id": 29,
+      "question": "Choose the correct synonym for 'MUNDANE':",
+      "options": ["Exciting", "Ordinary", "Complex", "Mysterious"],
+      "answer": 1,
+      "explanation": "Mundane means lacking interest or excitement; dull, so ordinary is the best synonym."
+    },
+    {
+      "id": 30,
+      "question": "Which word is not a noun?",
+      "options": ["Happiness", "Beautiful", "Knowledge", "Information"],
+      "answer": 1,
+      "explanation": "Beautiful is an adjective, while the others are nouns."
+    },
+    {
+      "id": 56,
+      "question": "Choose the word that is an antonym for 'OBFUSCATE'.",
+      "options": ["Confuse", "Clarify", "Conceal", "Darken"],
+      "answer": 1,
+      "explanation": "To obfuscate means to make something obscure or unclear. Clarify is the direct opposite."
+    },
+    {
+      "id": 57,
+      "question": "The manager wanted to _____ the new employee on the company's policies.",
+      "options": ["brief", "debrief", "short", "inform"],
+      "answer": 0,
+      "explanation": "'Brief' means to give concise instructions or information. 'Debrief' is what happens after a mission or event."
+    },
+    {
+      "id": 58,
+      "question": "Find the part of the sentence with an error: (A) Neither the students (B) nor the teacher (C) were present in (D) the classroom.",
+      "options": ["A", "B", "C", "D"],
+      "answer": 2,
+      "explanation": "When using 'neither/nor', the verb agrees with the subject closer to it. 'Teacher' is singular, so the verb should be 'was', not 'were'."
+    },
+    {
+      "id": 59,
+      "question": "A person who can do anything for money is called a:",
+      "options": ["Mercenary", "Materialist", "Patriot", "Spendthrift"],
+      "answer": 0,
+      "explanation": "A mercenary is a person primarily concerned with making money at the expense of ethics."
+    },
+    {
+      "id": 60,
+      "question": "The phrase 'to hit the nail on the head' means:",
+      "options": ["To work hard", "To make a lucky guess", "To describe exactly what is causing a situation or problem", "To cause an argument"],
+      "answer": 2,
+      "explanation": "This idiom means to be precisely right about something."
+    },
+    {
+      "id": 61,
+      "question": "Choose the correct analogy: 'Cub : Bear :: _____ : Cat'",
+      "options": ["Kitten", "Puppy", "Fawn", "Joey"],
+      "answer": 0,
+      "explanation": "A cub is a young bear, just as a kitten is a young cat."
+    },
+    {
+      "id": 62,
+      "question": "Select the correctly spelled word.",
+      "options": ["Questionaire", "Questionnaire", "Qestionnaire", "Questionnare"],
+      "answer": 1,
+      "explanation": "The correct spelling is 'Questionnaire'."
+    },
+    {
+      "id": 63,
+      "question": "The company's performance was _____ by the economic downturn.",
+      "options": ["effected", "affected", "affection", "effective"],
+      "answer": 1,
+      "explanation": "'Affected' is the verb meaning 'to influence'. 'Effected' is a verb meaning 'to bring about'. 'Effect' is the noun form."
+    },
+    {
+      "id": 64,
+      "question": "Choose the synonym for 'EPHEMERAL'.",
+      "options": ["Everlasting", "Transient", "Strong", "Weak"],
+      "answer": 1,
+      "explanation": "Ephemeral means lasting for a very short time. Transient is the best synonym."
+    },
+    {
+      "id": 65,
+      "question": "Rearrange the jumbled parts to form a meaningful sentence: (P) for his team (Q) a crucial role (R) he played (S) in the victory",
+      "options": ["RQSP", "RSPQ", "RQPS", "RSQP"],
+      "answer": 2,
+      "explanation": "The correct order is 'He played (R) a crucial role (Q) for his team (P) in the victory (S)'."
+    }
+  ]
+}

@@ -15,6 +15,8 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import useLogoutOnClose from "@/hooks/useLogoutOnClose";
 import InterviewSetup from "./pages/InterviewSetup";
 import ForgotPassword from "./pages/ForgotPassword"; // Import the new component
+import AptitudeTest from "./components/AptitudeTest";
+import AptitudeIntro from "./components/AptitudeIntro";
 
 // ✅ Internal route wrapper to use hook
 const AppRoutes = () => {
@@ -32,11 +34,13 @@ const AppRoutes = () => {
 
         {/* ✅ Protected routes */}
         <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
-        <Route path="/interview" element={<InterviewPage />} />
-      <Route path="/interview-choice" element={<InterviewSetup />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/interview" element={<ProtectedRoute><InterviewPage/></ProtectedRoute>} />
+        <Route path="/interview-choice" element={<ProtectedRoute><InterviewSetup /></ProtectedRoute>} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/aptitude-intro" element={<ProtectedRoute><AptitudeIntro /></ProtectedRoute>} />
+        <Route path="/aptitude-test" element={<ProtectedRoute><AptitudeTest /></ProtectedRoute>} /> 
         {/* You will also need a route for the actual password reset page */}
-        {/* <Route path="/reset-password" element={<ResetPassword />} />  */}
+        {/* <Route path="/reset-password" element={<ResetPassword />} />  */}        
       </Routes>
     </BrowserRouter>
   );

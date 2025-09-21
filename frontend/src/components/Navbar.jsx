@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, LogIn, LogOut } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
-
 const navigationItems = [
   { name: "Analyze Resume", href: "/analyze-resume" },
   { name: "Interview Practice", href: "/interview-choice" },
+  { name: "Aptitude Test", href: '/aptitude-intro'},
   { name: "About", href: "#about" },
   { name: "Contact", href: "#contact" },
 ];
@@ -44,10 +44,8 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
   const handleLinkClick = () => setIsMenuOpen(false);
-
   const navigate = useNavigate();
   const location = useLocation();
-
   const [profilePic, setProfilePic] = useState(localStorage.getItem("profilePic") || "/default-avatar.png");
 
   useEffect(() => {
@@ -57,12 +55,10 @@ const Navbar = () => {
         setProfilePic(storedPic);
       }
     }, 500);
-
     return () => clearInterval(interval);
   }, [profilePic]);
 
   const isLoggedIn = !!localStorage.getItem("token");
-
   const handleLogout = () => {
     const confirmLogout = window.confirm("Are you sure you want to log out?");
     if (confirmLogout) {
@@ -71,7 +67,6 @@ const Navbar = () => {
       navigate("/login");
     }
   };
-  
 
   // Filter nav items: show About & Contact only on /home
   const filteredNavigationItems = navigationItems.filter((item) => {
@@ -102,13 +97,11 @@ const Navbar = () => {
               </p>
             </div>
           </div>
-
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-4">
             {filteredNavigationItems.map((item) => (
               <NavLink key={item.name} item={item} />
             ))}
-
             {isLoggedIn ? (
               <div className="flex items-center gap-9">
                 <TooltipProvider>
@@ -126,7 +119,6 @@ const Navbar = () => {
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
-
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
