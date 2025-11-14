@@ -17,7 +17,7 @@ def call_gemini_api(prompt):
         print("Error: GEMINI_API_KEY environment variable not set.")
         return None
 
-    api_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={api_key}"
+    api_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
 
     try:
         response = requests.post(api_url, headers={'Content-Type': 'application/json'}, data=json.dumps(payload))

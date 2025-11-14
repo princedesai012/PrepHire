@@ -15,9 +15,9 @@ export default function InterviewMain() {
         <div className="bg-white shadow rounded-2xl p-4 flex-1 min-h-[300px]">
           <ChatBox />
         </div>
-        <div className="bg-white shadow rounded-2xl p-4 flex-1 min-h-[300px]">
+        {/* <div className="bg-white shadow rounded-2xl p-4 flex-1 min-h-[300px]">
           <InterviewResults />
-        </div>
+        </div> */}
       </div>
     </div>
   );

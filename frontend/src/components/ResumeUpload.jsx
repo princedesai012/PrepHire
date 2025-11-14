@@ -182,9 +182,9 @@ const ResumeUpload = () => {
                 ✅ <strong>Skills:</strong>{" "}
                 {result.skills && result.skills.join(", ")}
               </li>
-              <li>
+              {/* <li>
                 ✅ <strong>Experience:</strong> {result.experience}
-              </li>
+              </li> */}
               <li>
                 ✅ <strong>Education:</strong> {result.education}
               </li>
